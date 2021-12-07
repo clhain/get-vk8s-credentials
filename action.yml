@@ -1,0 +1,35 @@
+name: 'SOME_COMPANY - Get Volterra vk8s Credentials'
+description: 'Fetch a volterra vk8s kubeconfig using vesctl and GitHub Actions'
+inputs:
+  cluster-name:
+    description: 'The name of the volterra vk8s cluster to fetch kubeconfig for.'
+    required: true
+  namespace-name:
+    description: 'The namespace containing the vk8s cluster to fetch the kubeconfig for.'
+    required: true
+  expiration-days:
+    description: 'Number of days the kubeconfig credentials will be active for'
+    required: true
+    default: 1
+  credential-name:
+    description: 'The name of the vk8s credential that will be generated.'
+    required: true
+    default: "vk8s-kubeconfig"
+outputs:
+  credential-name:
+    description: "The name of the kubeconfig credential."
+    value: ${{ steps.get-credential.outputs.cred-name }}
+runs:
+  using: "composite"
+  steps:
+    - id: expand-template
+      run: envsubst < ${{ github.action_path }}/api-credential.yml.tpl > ${{ github.action_path }}/api-credential.yml
+      shell: bash
+      env:
+        EXPIRATION_DAYS: ${{ inputs.expiration-days }}
+        CLUSTER_NAME: ${{ inputs.cluster-name }}
+        NAMESPACE_NAME: ${{ inputs.namespace-name }}
+        CREDENTIAL_NAME: ${{ inputs.credential-name }}
+    - id: get-credential
+      run: echo "::set-output name=cred-name::$(${{ github.action_path }}/get-creds.sh)"
+      shell: bash
