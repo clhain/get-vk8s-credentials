@@ -15,10 +15,10 @@ inputs:
     description: 'The name of the vk8s credential that will be generated.'
     required: true
     default: "vk8s-kubeconfig"
-outputs:
-  credential-name:
-    description: "The name of the kubeconfig credential."
-    value: ${{ steps.get-credential.outputs.cred-name }}
+# outputs:
+#   credential-name:
+#     description: "The name of the kubeconfig credential."
+#     value: ${{ steps.get-credential.outputs.cred-name }}
 runs:
   using: "composite"
   steps:
@@ -31,7 +31,7 @@ runs:
         NAMESPACE_NAME: ${{ inputs.namespace-name }}
         CREDENTIAL_NAME: ${{ inputs.credential-name }}
     - id: get-credential
-      run: chmod +x ${{ github.action_path }}/get-creds.sh && echo "::set-output name=cred-name::$(${{ github.action_path }}/get-creds.sh)"
+      run: chmod +x ${{ github.action_path }}/get-creds.sh && ${{ github.action_path }}/get-creds.sh
       shell: bash
       env:
         TEMPLATE: ${{ github.action_path }}/api-credential.yml
