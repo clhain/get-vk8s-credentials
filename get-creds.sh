@@ -6,7 +6,7 @@ do
     if [[ $line =~ "name: " ]]; then
         NAME=${line:6}
     fi
-done < <(vesctl request rpc api_credential.CustomAPI.Create -i ./api-credential.yml --uri /public/namespaces/system/api_credentials --http-method POST --timeout 10)
+done < <($VOLTERRA_CLI_PATH/vesctl request rpc api_credential.CustomAPI.Create -i ./api-credential.yml --uri /public/namespaces/system/api_credentials --http-method POST --timeout 10)
 
 mkdir -p ~/.kube/
 
