@@ -33,3 +33,5 @@ runs:
     - id: get-credential
       run: chmod +x ${{ github.action_path }}/get-creds.sh && echo "::set-output name=cred-name::$(${{ github.action_path }}/get-creds.sh)"
       shell: bash
+      env:
+        TEMPLATE: ${{ github.action_path }}/api-credential.yml
