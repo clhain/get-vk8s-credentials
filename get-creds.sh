@@ -10,6 +10,6 @@ done < <(vesctl request rpc api_credential.CustomAPI.Create -i ./api-credential.
 
 mkdir -p ~/.kube/
 
-base64 --decode <<< $DATA > ~/.kube/config
-echo "KUBECONFIG=~/.kube/config" >> $GITHUB_ENV
+base64 --decode <<< $DATA > $HOME/.kube/config
+echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 echo $NAME
